@@ -139,7 +139,7 @@
             transform: translateY(0);
         }
 
-        /* Sidebar Navigation */
+        /* Sidebar Navigation - HIDDEN ON SPLASH */
         .sidebar {
             position: fixed;
             top: 0;
@@ -154,8 +154,15 @@
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
+        body.splash-hidden .sidebar {
+            opacity: 1;
+            visibility: visible;
+        }
 
         .nav-logo {
             display: flex;
@@ -217,7 +224,7 @@
             text-transform: uppercase;
         }
 
-        /* Hero Section */
+        /* Hero Section - FULLY RESPONSIVE */
         .hero-section {
             height: 100vh;
             display: flex;
@@ -226,7 +233,7 @@
             position: relative;
             margin-left: 80px;
             overflow: hidden;
-            background-image: url(desktop_fit.jpg); /* Replace 'your-image.jpg' with your actual image path */
+            background-image: url(desktop_fit.jpg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -275,38 +282,37 @@
             text-align: center;
             z-index: 2;
             position: relative;
+            padding: 20px;
         }
 
-        .glitch-text {
+        /* NEW: Smooth animation for name */
+        .name-text {
             font-size: 4rem;
             font-weight: bold;
             color: var(--cyber-blue);
             position: relative;
             text-transform: uppercase;
             letter-spacing: 5px;
-            animation: glitch 2s infinite;
+            animation: smoothGlow 3s ease-in-out infinite;
+            text-shadow: 0 0 20px var(--cyber-blue),
+                         0 0 40px var(--cyber-purple),
+                         0 0 60px var(--cyber-blue);
         }
 
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch-text::before {
-            color: var(--cyber-purple);
-            z-index: -1;
-            animation: glitchTop 2s infinite;
-        }
-
-        .glitch-text::after {
-            color: var(--cyber-green);
-            z-index: -2;
-            animation: glitchBottom 2s infinite;
+        @keyframes smoothGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px var(--cyber-blue),
+                             0 0 40px var(--cyber-purple),
+                             0 0 60px var(--cyber-blue);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 30px var(--cyber-blue),
+                             0 0 60px var(--cyber-purple),
+                             0 0 90px var(--cyber-blue),
+                             0 0 120px var(--cyber-green);
+                transform: scale(1.05);
+            }
         }
 
         .hero-subtitle {
@@ -321,6 +327,12 @@
             white-space: nowrap;
             overflow: hidden;
             width: 0;
+            display: inline-block;
+        }
+
+        .hero-info {
+            margin-top: 30px;
+            margin-bottom: 80px;
         }
 
         .hero-info h2 {
@@ -328,17 +340,19 @@
             color: var(--cyber-purple);
             margin: 30px 0 10px;
             text-shadow: var(--glow-purple);
+            display: none;
         }
 
         .hero-info p {
             font-size: 1.1rem;
             color: var(--cyber-white);
             opacity: 0.8;
+            display: none;
         }
 
-        /* Audio Introduction Button and Visualizer */
+        /* Audio Introduction Button and Visualizer - MOVED DOWN */
         #intro-btn {
-            margin-top: 40px;
+            margin-top: 60px;
             padding: 15px 40px;
             background: transparent;
             border: 2px solid var(--cyber-green);
@@ -1000,30 +1014,6 @@
             66% { transform: translateY(10px) translateX(-5px); }
         }
 
-        @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-        }
-
-        @keyframes glitchTop {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, -2px); }
-            40% { transform: translate(-2px, 2px); }
-            60% { transform: translate(2px, -2px); }
-            80% { transform: translate(2px, 2px); }
-        }
-
-        @keyframes glitchBottom {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(2px, 2px); }
-            40% { transform: translate(2px, -2px); }
-            60% { transform: translate(-2px, 2px); }
-            80% { transform: translate(-2px, -2px); }
-        }
-
         @keyframes typewriter {
             to { width: 100%; }
         }
@@ -1053,7 +1043,24 @@
             100% { transform: rotate(45deg) translate(30%, 30%); }
         }
 
-        /* Responsive Design */
+        /* RESPONSIVE DESIGN - FULLY OPTIMIZED */
+        @media (max-width: 1024px) {
+            .hero-section {
+                background-attachment: scroll;
+            }
+            
+            .about-content,
+            .skills-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .floating-skills {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 60px;
@@ -1063,13 +1070,42 @@
                 display: none;
             }
             
+            .nav-logo span {
+                font-size: 8px;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
             section {
                 margin-left: 60px;
                 padding: 50px 20px;
             }
             
-            .glitch-text {
+            .hero-section {
+                margin-left: 60px;
+                background-attachment: scroll;
+            }
+            
+            .name-text {
                 font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            #intro-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .enter-lab-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
             }
             
             .about-content,
@@ -1081,10 +1117,6 @@
             
             .projects-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .hero-info h2 {
-                font-size: 2rem;
             }
             
             .section-title {
@@ -1099,11 +1131,37 @@
             .cyber-footer {
                 margin-left: 60px;
             }
+            
+            .skill-cards {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
             .sidebar {
                 width: 50px;
+                padding: 15px 0;
+            }
+            
+            .nav-logo {
+                margin-bottom: 30px;
+            }
+            
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .nav-logo span {
+                font-size: 7px;
+            }
+            
+            .nav-icon {
+                font-size: 16px;
+            }
+            
+            .nav-link {
+                padding: 10px;
             }
             
             section {
@@ -1111,13 +1169,37 @@
                 padding: 30px 15px;
             }
             
-            .glitch-text {
+            .hero-section {
+                margin-left: 50px;
+            }
+            
+            .name-text {
                 font-size: 1.8rem;
                 letter-spacing: 2px;
             }
             
-            .hero-info h2 {
-                font-size: 1.5rem;
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .hero-info {
+                margin-bottom: 60px;
+            }
+            
+            #intro-btn {
+                margin-top: 40px;
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+            
+            .enter-lab-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+            
+            #audio-visualizer {
+                width: 300px;
+                height: 80px;
             }
             
             .section-title {
@@ -1146,6 +1228,19 @@
             
             .cyber-footer {
                 margin-left: 50px;
+                padding: 20px;
+            }
+            
+            .cyber-footer p {
+                font-size: 0.8rem;
+            }
+            
+            .contact-content {
+                gap: 30px;
+            }
+            
+            .social-link {
+                padding: 12px 20px;
             }
         }
     </style>
@@ -1154,8 +1249,7 @@
     <!-- Splash Screen -->
     <div id="splash-screen">
         <div class="splash-content">
-            <h1 class="glitch-text" data-text="WELCOME TO THE FUTURE">WELCOME TO THE FUTURE
-</h1>
+            <h1 class="name-text">WELCOME TO THE FUTURE</h1>
         </div>
         <!-- Fixed Floating AI Thoughts -->
         <div id="ai-thoughts"></div>
@@ -1205,14 +1299,13 @@
                 <div class="particles"></div>
             </div>
             <div class="hero-content">
-                <h1 class="glitch-text" data-text="AI PORTFOLIO">AI PORTFOLIO</h1>
+                <h1 class="name-text">PRANAV PATIL</h1>
                 <div class="hero-subtitle">
-                    <span class="typewriter">Welcome to the future of AI development</span>
-                    
+                    <span class="typewriter">Generative AI Student & Future Innovator</span>
                 </div>
                 <div class="hero-info">
                     <h2>Pranav Patil</h2>
-                    <p>Generative AI Student & Future Innovator </p>
+                    <p>Generative AI Student & Future Innovator</p>
                 </div>
                 
                 <!-- Audio Introduction Button and Visualizer -->
@@ -1524,12 +1617,11 @@
                         <div class="suggestion-item">🚀 "Let's discuss AI driven opportunities"</div>
                         <div class="suggestion-item">🔎 "I'd like to learn more about your research"</div>
                         <div class="suggestion-item">🤖 "Teach me your AI secrets!"</div>
-
                     </div>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/vrbeirer" class="social-link" target="_blank">
-                        <span class="social-icon">🐙</span>
+                        <span class="social-icon">🙙</span>
                         <span class="social-text">GitHub</span>
                     </a>
                     <a href="http://www.linkedin.com/in/patil04" class="social-link" target="_blank">
@@ -1554,7 +1646,7 @@
 
         <!-- Footer -->
         <footer class="cyber-footer">
-            <p>© 2025 Pranav Patil | Powered by code and Intelligence.⚡ </p>
+            <p>© 2025 Pranav Patil | Powered by code and Intelligence.⚡</p>
             <div class="footer-glows"></div>
         </footer>
     </div>
@@ -2072,7 +2164,7 @@
             suggestionItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const messageInput = document.getElementById('message');
-                    const suggestionText = item.textContent.replace(/^[🔬💡🚀]\s*/, '');
+                    const suggestionText = item.textContent.replace(/^[💬💡🚀🔎🤖]\s*/, '');
                     
                     messageInput.value = suggestionText;
                     messageInput.focus();
